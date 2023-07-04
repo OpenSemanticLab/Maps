@@ -24,13 +24,19 @@ class OutputFacade {
 		return $instance;
 	}
 
+	/*
+	 * @param string $html
+	 * @return string
+	 */
 	public function addHtml( string $html ) {
 		if ( $this->outputPage !== null ) {
 			$this->outputPage->addHTML( $html );
 		}
 
+		// @see: https://github.com/ProfessionalWiki/Maps/issues/734
 		if ( $this->parserOutput !== null ) {
-			$this->parserOutput->setText( $this->parserOutput->getRawText() . $html );
+			$rawText = ( isset( $this->mText ) && $this->mText !== null ) ? $this->parserOutput->getRawText() : '';
+			$this->parserOutput->setText( $rawText . $html );
 		}
 	}
 
